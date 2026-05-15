@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#080a0d;
+  --surface:#0f1117;
+  --card:#13151c;
+  --neon:#00ff88;
+  --purple:#7c5cfc;
+  --pink:#ff2d78;
+  --yellow:#ffe600;
+  --text:#f5f5f5;
+  --muted:#666;
+  --discord:#5865f2;
+  --bebas:'Bebas Neue',sans-serif;
+  --body:'Space Grotesk',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  overflow-x:hidden;
+  cursor:none;
+}
+.cursor{
+  width:12px;height:12px;
+  background:var(--neon);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,width 0.2s,height 0.2s;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  width:36px;height:36px;
+  border:1px solid var(--neon);
+  border-radius:50%;
+  position:fixed;
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.15s ease,width 0.2s,height 0.2s;
+  opacity:0.5;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 3rem;
+}
+.nav-logo{
+  font-family:var(--bebas);
+  font-size:2rem;letter-spacing:0.1em;
+  color:var(--text);
+  position:relative;
+}
+.nav-logo span{color:var(--neon);}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--neon);}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  padding:0 3rem 4rem;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 75% 40%, rgba(124,92,252,0.18) 0%, transparent 60%),
+             radial-gradient(ellipse 40% 40% at 20% 70%, rgba(0,255,136,0.08) 0%, transparent 60%);
+}
+.hero-grid-overlay{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+.hero-badge{
+  position:absolute;top:6rem;left:3rem;
+  display:flex;align-items:center;gap:0.6rem;
+  font-size:0.8rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;
+}
+.hero-badge::before{content:'';width:8px;height:8px;background:var(--neon);border-radius:50%;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+/* floating emoji blobs */
+.blob{
+  position:absolute;font-size:5rem;
+  animation:float 5s ease-in-out infinite;
+  user-select:none;pointer-events:none;
+}
+.blob1{top:15%;left:8%;animation-delay:0s;}
+.blob2{top:20%;right:5%;font-size:3rem;animation-delay:1s;}
+.blob3{top:55%;right:12%;font-size:2.5rem;animation-delay:2s;}
+.blob4{top:38%;left:45%;font-size:2rem;animation-delay:0.5s;}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+
+.avatar-wrap{
+  position:absolute;top:5.5rem;right:3rem;
+  width:130px;height:130px;
+  border-radius:50%;
+  border:2px solid var(--neon);
+  box-shadow:0 0 30px rgba(0,255,136,0.3);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--surface);
+  font-size:3.5rem;
+}
+
+.hero-eyebrow{
+  font-size:1rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:0.5rem;
+}
+.hero-name{
+  font-family:var(--bebas);
+  font-size:clamp(5rem,14vw,13rem);
+  line-height:0.85;
+  letter-spacing:0.02em;
+  position:relative;
+  -webkit-text-stroke:2px rgba(255,255,255,0.15);
+  color:var(--text);
+}
+.hero-name .neon-word{
+  color:var(--neon);
+  -webkit-text-stroke:0px;
+  text-shadow:0 0 60px rgba(0,255,136,0.4);
+}
+.hero-name .purple-word{
+  color:var(--purple);
+  -webkit-text-stroke:0px;
+}
+.hero-sub{
+  display:flex;align-items:center;gap:2rem;
+  margin-top:1.5rem;
+}
+.hero-desc{
+  color:var(--muted);font-size:0.95rem;max-width:380px;line-height:1.6;
+}
+.hero-cta{
+  flex-shrink:0;
+  padding:1rem 2.5rem;
+  background:var(--neon);
+  color:#000;
+  font-family:var(--bebas);
+  font-size:1.2rem;letter-spacing:0.1em;
+  text-decoration:none;border:none;cursor:none;
+  transition:transform 0.2s,box-shadow 0.2s;
+  display:inline-block;
+}
+.hero-cta:hover{transform:scale(1.05);box-shadow:0 0 40px rgba(0,255,136,0.5);}
+
+/* MARQUEE */
+.marquee-wrap{
+  background:var(--purple);
+  padding:0.75rem 0;
+  overflow:hidden;white-space:nowrap;
+  margin:0;
+}
+.marquee-track{
+  display:inline-block;
+  animation:marquee 18s linear infinite;
+}
+.marquee-track span{
+  font-family:var(--bebas);
+  font-size:1.4rem;letter-spacing:0.15em;
+  color:#fff;margin:0 2rem;
+}
+.marquee-track span.dot{color:var(--neon);}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+.section{padding:6rem 3rem;max-width:1200px;margin:0 auto;}
+.sec-label{
+  font-size:0.72rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--neon);margin-bottom:0.75rem;
+}
+.sec-title{
+  font-family:var(--bebas);
+  font-size:clamp(3rem,6vw,5.5rem);
+  line-height:0.9;letter-spacing:0.03em;
+  margin-bottom:3rem;
+}
+
+/* ABOUT */
+.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.about-img{
+  aspect-ratio:1;background:var(--card);
+  border:1px solid rgba(124,92,252,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8rem;position:relative;overflow:hidden;
+}
+.about-img::after{
+  content:'KRD';
+  position:absolute;bottom:1rem;right:1rem;
+  font-family:var(--bebas);font-size:4rem;
+  color:rgba(0,255,136,0.08);letter-spacing:0.1em;
+}
+.about-text p{color:var(--muted);margin-bottom:1rem;line-height:1.7;}
+.about-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem;}
+.tag{
+  padding:0.35rem 1rem;
+  font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--muted);
+  transition:all 0.2s;cursor:none;
+}
+.tag:hover{border-color:var(--neon);color:var(--neon);}
+.tag.purple{border-color:var(--purple);color:var(--purple);}
+.tag.pink{border-color:var(--pink);color:var(--pink);}
+
+/* GAME CARDS */
+.games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.game-card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,0.06);
+  padding:2rem 1.75rem;
+  position:relative;overflow:hidden;
+  transition:transform 0.3s,border-color 0.3s;
+  cursor:none;
+}
+.game-card:hover{transform:translateY(-6px);}
+.game-card:hover .gc-accent{opacity:1;}
+.gc-accent{
+  position:absolute;top:0;left:0;right:0;height:3px;
+  opacity:0;transition:opacity 0.3s;
+}
+.game-card:nth-child(1) .gc-accent{background:var(--neon);}
+.game-card:nth-child(2) .gc-accent{background:var(--purple);}
+.game-card:nth-child(3) .gc-accent{background:var(--pink);}
+.game-card:nth-child(4) .gc-accent{background:var(--yellow);}
+.game-card:nth-child(5) .gc-accent{background:var(--discord);}
+.game-card:nth-child(6) .gc-accent{background:var(--neon);}
+.game-card:hover{border-color:rgba(255,255,255,0.15);}
+.gc-icon{font-size:2.5rem;margin-bottom:1rem;}
+.gc-title{font-family:var(--bebas);font-size:1.6rem;letter-spacing:0.05em;margin-bottom:0.5rem;}
+.gc-desc{color:var(--muted);font-size:0.88rem;line-height:1.6;}
+.gc-tag{
+  display:inline-block;margin-top:1rem;
+  padding:0.2rem 0.7rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;
+}
+
+/* DISCORD SECTION */
+.discord-section{
+  background:linear-gradient(135deg, rgba(88,101,242,0.12) 0%, rgba(124,92,252,0.08) 100%);
+  border:1px solid rgba(88,101,242,0.25);
+  padding:4rem 3rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+  max-width:1200px;margin:0 auto 6rem;
+}
+.discord-icon{
+  font-size:6rem;text-align:center;
+  animation:pulse 3s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.discord-text h2{font-family:var(--bebas);font-size:3.5rem;line-height:0.9;margin-bottom:1rem;}
+.discord-text h2 span{color:var(--discord);}
+.discord-text p{color:var(--muted);margin-bottom:1.5rem;line-height:1.7;}
+.discord-btn{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  padding:0.9rem 2rem;
+  background:var(--discord);color:#fff;
+  font-family:var(--bebas);font-size:1.2rem;letter-spacing:0.1em;
+  text-decoration:none;border:none;cursor:none;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+.discord-btn:hover{transform:scale(1.04);box-shadow:0 0 30px rgba(88,101,242,0.5);}
+
+/* KURDISTAN */
+.krd-section{
+  background:var(--surface);
+  border-top:1px solid rgba(255,255,255,0.05);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  padding:6rem 3rem;
+}
+.krd-inner{max-width:1200px;margin:0 auto;}
+.krd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.05);margin-top:3rem;}
+.krd-tile{
+  background:var(--surface);
+  padding:2.5rem 1.75rem;
+  text-align:center;
+  transition:background 0.3s;cursor:none;
+}
+.krd-tile:hover{background:var(--card);}
+.krd-flag{font-size:3rem;margin-bottom:1rem;}
+.krd-tile h3{font-family:var(--bebas);font-size:1.4rem;letter-spacing:0.05em;margin-bottom:0.5rem;}
+.krd-tile p{color:var(--muted);font-size:0.85rem;line-height:1.6;}
+
+/* CONTACT */
+.contact-wrap{
+  text-align:center;
+  padding:8rem 3rem;
+  position:relative;overflow:hidden;
+}
+.contact-wrap::before{
+  content:'';position:absolute;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.contact-title{
+  font-family:var(--bebas);
+  font-size:clamp(4rem,10vw,9rem);
+  line-height:0.85;
+  margin-bottom:2rem;
+}
+.contact-title .outline{
+  -webkit-text-stroke:2px rgba(255,255,255,0.2);
+  color:transparent;
+}
+.contact-title .filled{color:var(--neon);}
+.contact-links{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.cl{
+  padding:0.85rem 2rem;
+  font-size:0.82rem;letter-spacing:0.15em;text-transform:uppercase;
+  text-decoration:none;border:1px solid rgba(255,255,255,0.12);color:var(--muted);
+  transition:all 0.2s;cursor:none;
+}
+.cl:hover{border-color:var(--neon);color:var(--neon);}
+.cl.disc{border-color:var(--discord);color:var(--discord);}
+.cl.disc:hover{background:var(--discord);color:#fff;}
+
+/* FOOTER */
+footer{
+  border-top:1px solid rgba(255,255,255,0.05);
+  padding:2rem 3rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.78rem;color:var(--muted);
+  font-family:var(--body);
+}
+footer span b{color:var(--neon);}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+  <div class="nav-logo">SHE<span>X</span>A</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#games">Games</a></li>
+    <li><a href="#discord">Discord</a></li>
+    <li><a href="#kurdistan">Kurdistan</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-overlay"></div>
+
+  <div class="hero-badge">🟢 Online — Ready to play</div>
+
+  <div class="blob blob1">🎮</div>
+  <div class="blob blob2">⚡</div>
+  <div class="blob blob3">🏔️</div>
+  <div class="blob blob4">🎯</div>
+
+  <div class="avatar-wrap">🦅</div>
+
+  <p class="hero-eyebrow">Hey, I am</p>
+  <h1 class="hero-name">
+    <span class="neon-word">SHEXA</span><br>
+    <span class="purple-word">KURDISTAN</span><br>
+    GAMER
+  </h1>
+  <div class="hero-sub">
+    <p class="hero-desc">From the mountains of Kurdistan — gaming, building communities, and vibing on Discord. 🏔️🎮</p>
+    <a href="#contact" class="hero-cta">LET'S PLAY →</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>KURDISTAN</span><span class="dot">✦</span>
+    <span>GAMER</span><span class="dot">✦</span>
+    <span>DISCORD</span><span class="dot">✦</span>
+    <span>SHEXA</span><span class="dot">✦</span>
+    <span>🏔️ MOUNTAINS</span><span class="dot">✦</span>
+    <span>VIBE CODER</span><span class="dot">✦</span>
+    <span>KURDISTAN</span><span class="dot">✦</span>
+    <span>GAMER</span><span class="dot">✦</span>
+    <span>DISCORD</span><span class="dot">✦</span>
+    <span>SHEXA</span><span class="dot">✦</span>
+    <span>🏔️ MOUNTAINS</span><span class="dot">✦</span>
+    <span>VIBE CODER</span><span class="dot">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <p class="sec-label">About Me</p>
+  <h2 class="sec-title">WHO IS<br>SHEXA?</h2>
+  <div class="about-layout">
+    <div class="about-img">🦅</div>
+    <div class="about-text">
+      <p>A gamer and community builder from <strong style="color:var(--neon)">Kurdistan</strong> 🏔️. I live between the mountains and the metaverse — playing games, hanging out on Discord, and building cool things online.</p>
+      <p>Self-knowledge for me is about knowing your roots, your squad, and your playstyle. Whether it's a clutch moment in-game or a deep conversation at 2AM on Discord — I show up fully.</p>
+      <p>Kurdistan gave me grit. Gaming gave me strategy. Discord gave me community.</p>
+      <div class="about-tags">
+        <span class="tag">Gamer</span>
+        <span class="tag purple">Kurdish</span>
+        <span class="tag pink">Discord Server Owner</span>
+        <span class="tag">Vibe Coder</span>
+        <span class="tag">Night Owl 🌙</span>
+        <span class="tag purple">Mountain Soul</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAME CARDS -->
+<section class="section" id="games" style="padding-top:0;">
+  <p class="sec-label">Games & Interests</p>
+  <h2 class="sec-title">MY<br>WORLD</h2>
+  <div class="games-grid">
+    <div class="game-card">
+      <div class="gc-accent"></div>
+      <div class="gc-icon">🎯</div>
+      <div class="gc-title">FPS Games</div>
+      <p class="gc-desc">Headshots, clutch rounds, and zero chill. Tactical shooter is my language.</p>
+      <span class="gc-tag" style="background:rgba(0,255,136,0.1);color:var(--neon);">Main Genre</span>
+    </div>
+    <div class="game-card">
+      <div class="gc-accent"></div>
+      <div class="gc-icon">🏆</div>
+      <div class="gc-title">Competitive</div>
+      <p class="gc-desc">Ranked grind, tournament energy. Losing is just a tutorial for winning harder.</p>
+      <span class="gc-tag" style="background:rgba(124,92,252,0.1);color:var(--purple);">Mindset</span>
+    </div>
+    <div class="game-card">
+      <div class="gc-accent"></div>
+      <div class="gc-icon">🌍</div>
+      <div class="gc-title">Open World</div>
+      <p class="gc-desc">Exploring vast lands reminds me of Kurdistan — wide, epic, full of secrets.</p>
+      <span class="gc-tag" style="background:rgba(255,45,120,0.1);color:var(--pink);">Exploration</span>
+    </div>
+    <div class="game-card">
+      <div class="gc-accent"></div>
+      <div class="gc-icon">👾</div>
+      <div class="gc-title">Indie Games</div>
+      <p class="gc-desc">Small team, big soul. Indie games hit different — like underground music but pixels.</p>
+      <span class="gc-tag" style="background:rgba(255,230,0,0.1);color:var(--yellow);">Hidden Gems</span>
+    </div>
+    <div class="game-card">
+      <div class="gc-accent"></div>
+      <div class="gc-icon">🎙️</div>
+      <div class="gc-title">Voice Chat</div>
+      <p class="gc-desc">The best part of any session is the squad energy. Kurdish + gamer banter = elite.</p>
+      <span class="gc-tag" style="background:rgba(88,101,242,0.1);color:var(--discord);">Discord Life</span>
+    </div>
+    <div class="game-card">
+      <div class="gc-accent"></div>
+      <div class="gc-icon">🛠️</div>
+      <div class="gc-title">Vibe Coding</div>
+      <p class="gc-desc">Building apps and bots for fun. If it breaks it's a feature. If it works it's art.</p>
+      <span class="gc-tag" style="background:rgba(0,255,136,0.1);color:var(--neon);">Side Quest</span>
+    </div>
+  </div>
+</section>
+
+<!-- DISCORD -->
+<div class="discord-section" id="discord">
+  <div class="discord-icon">🎮<br>💬</div>
+  <div class="discord-text">
+    <h2>JOIN THE<br><span>DISCORD</span><br>SERVER</h2>
+    <p>Where Kurdish gamers link up. Chill voice chats, game nights, memes in Sorani, and zero toxicity. The mountains are the vibe, Discord is the base camp.</p>
+    <a href="#" class="discord-btn">⚡ JOIN SERVER</a>
+  </div>
+</div>
+
+<!-- KURDISTAN -->
+<div class="krd-section" id="kurdistan">
+  <div class="krd-inner">
+    <p class="sec-label">Roots</p>
+    <h2 class="sec-title">KURDISTAN<br>IS HOME</h2>
+    <div class="krd-grid">
+      <div class="krd-tile">
+        <div class="krd-flag">🏔️</div>
+        <h3>The Mountains</h3>
+        <p>Zagros flows through my blood. Hardest terrain, hardest people. Built different.</p>
+      </div>
+      <div class="krd-tile">
+        <div class="krd-flag">🌻</div>
+        <h3>The Culture</h3>
+        <p>Rich history, strong identity. Kurdish pride isn't loud — it's deep and unshakeable.</p>
+      </div>
+      <div class="krd-tile">
+        <div class="krd-flag">🎵</div>
+        <h3>The Music</h3>
+        <p>Dengbêj storytelling to modern Kurdish trap. Music carries what words can't.</p>
+      </div>
+      <div class="krd-tile">
+        <div class="krd-flag">🕹️</div>
+        <h3>Gaming Here</h3>
+        <p>Kurdish gamers are on the rise. We bring our own energy to every server we join.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-wrap" id="contact">
+  <h2 class="contact-title">
+    <span class="outline">LET'S</span><br>
+    <span class="filled">CONNECT</span>
+  </h2>
+  <p style="color:var(--muted);margin-bottom:2.5rem;font-size:1rem;">Find me online. I don't bite — unless you camp in-game.</p>
+  <div class="contact-links">
+    <a href="#" class="cl disc">💬 Discord</a>
+    <a href="#" class="cl">🎮 Steam</a>
+    <a href="#" class="cl">📸 Instagram</a>
+    <a href="#" class="cl">🐦 Twitter / X</a>
+    <a href="#" class="cl">✉️ Email</a>
+  </div>
+</section>
+
+<footer>
+  <span>SHEXA © 2025 — <b>Kurdistan</b></span>
+  <span>Built with vibe coding ⚡</span>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx+'px';
+  cursor.style.top = my+'px';
+});
+function animRing(){
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) *.12;
+  ring.style.left = rx+'px';
+  ring.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button,.tag,.game-card,.krd-tile').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursor.style.width='20px';cursor.style.height='20px';
+    ring.style.width='55px';ring.style.height='55px';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursor.style.width='12px';cursor.style.height='12px';
+    ring.style.width='36px';ring.style.height='36px';
+  });
+});
+</script>
+</body>
+</html>
